@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SpendWise Budget — Track your salary, spending patterns and savings.">
+  <title>SpendWise — Budget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="salary.css">
+</head>
+<body>
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+        <rect width="40" height="40" rx="10" fill="url(#sg1)"/>
+        <path d="M12 26V18M16 26V14M20 26V20M24 26V16M28 26V12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="sg1" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#10b981"/><stop offset="1" stop-color="#059669"/></linearGradient></defs>
+      </svg>
+      <span>SpendWise</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item" id="navDashboard">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="dashboard.html" class="nav-item" id="navExpenses">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Expenses
+      </a>
+      <a href="salary.html" class="nav-item active" id="navBudget">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Budget
+      </a>
+      <a href="#" class="nav-item" id="navChart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+        Charts
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="index.html" class="nav-item logout">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- ========== MAIN ========== -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <div>
+          <h1 class="page-title">Budget</h1>
+          <p class="page-subtitle" id="currentDate"></p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="user-avatar">C</div>
+      </div>
+    </header>
+
+    <!-- Salary Input Section -->
+    <section class="salary-hero">
+      <div class="salary-hero-left">
+        <h2>Monthly Salary</h2>
+        <p>Enter your monthly income to track spending as a percentage of your salary</p>
+      </div>
+      <div class="salary-hero-right">
+        <div class="salary-input-group">
+          <span class="salary-prefix">₹</span>
+          <input type="number" id="salaryInput" placeholder="e.g. 50000" min="0" step="1">
+          <button type="button" class="btn-save-salary" id="saveSalary">Save</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Row -->
+    <section class="budget-stats">
+      <div class="stat-card green-glow">
+        <div class="stat-icon green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+        <div>
+          <span class="stat-label">Salary</span>
+          <span class="stat-value" id="statSalary">₹0</span>
+        </div>
+      </div>
+      <div class="stat-card blue-glow">
+        <div class="stat-icon blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <div>
+          <span class="stat-label">Total Spent</span>
+          <span class="stat-value" id="statSpent">₹0</span>
+        </div>
+      </div>
+      <div class="stat-card emerald-glow">
+        <div class="stat-icon emerald"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div>
+          <span class="stat-label">Remaining</span>
+          <span class="stat-value" id="statRemaining">₹0</span>
+        </div>
+      </div>
+      <div class="stat-card orange-glow">
+        <div class="stat-icon orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div>
+          <span class="stat-label">Spent %</span>
+          <span class="stat-value" id="statPct">0%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Time Filter Tabs -->
+    <section class="time-filter">
+      <button class="filter-btn active" data-filter="all">All Time</button>
+      <button class="filter-btn" data-filter="daily">Today</button>
+      <button class="filter-btn" data-filter="weekly">This Week</button>
+      <button class="filter-btn" data-filter="monthly">This Month</button>
+    </section>
+
+    <!-- Main Content Grid: Pie Chart + Category Bars -->
+    <section class="budget-grid">
+      <!-- Salary Pie Chart -->
+      <div class="panel salary-pie-panel">
+        <h2 class="panel-title">Salary Breakdown</h2>
+        <div class="chart-area">
+          <div class="chart-container" id="salaryChartContainer">
+            <canvas id="salaryPieChart" width="300" height="300"></canvas>
+            <div class="chart-center">
+              <span class="chart-total-label">Spent</span>
+              <span class="chart-total-value" id="chartSpentPct">0%</span>
+            </div>
+          </div>
+          <div class="chart-empty" id="salaryChartEmpty">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            <p>Enter your salary and add expenses<br>on the Dashboard to see the breakdown</p>
+          </div>
+        </div>
+        <div class="chart-legend" id="salaryLegend"></div>
+      </div>
+
+      <!-- Category Progress Bars -->
+      <div class="panel category-bars-panel">
+        <h2 class="panel-title">Category vs Salary</h2>
+        <div class="cat-bars-list" id="catBarsList">
+          <div class="empty-state" id="barsEmpty">
+            <p>No spending data for this period</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spending Over Time (Bar Chart) -->
+    <section class="panel timeline-panel">
+      <h2 class="panel-title">Spending Timeline</h2>
+      <div class="timeline-chart" id="timelineChart">
+        <div class="empty-state" id="timelineEmpty">
+          <p>Add expenses on the Dashboard to see your spending timeline</p>
+        </div>
+        <canvas id="barChart" width="800" height="250"></canvas>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ================================================
+       CATEGORIES & DATA
+       ================================================ */
+    const CATEGORIES = {
+      'Food':          { emoji: '🍔', color: '#ef4444' },
+      'Travel':        { emoji: '✈️', color: '#f59e0b' },
+      'Shopping':      { emoji: '🛒', color: '#8b5cf6' },
+      'Entertainment': { emoji: '🎬', color: '#ec4899' },
+      'Bills':         { emoji: '💡', color: '#3b82f6' },
+      'Health':        { emoji: '🏥', color: '#10b981' },
+      'Education':     { emoji: '📚', color: '#06b6d4' },
+      'Clothing':      { emoji: '👕', color: '#f97316' },
+      'Groceries':     { emoji: '🛍️', color: '#84cc16' },
+      'Other':         { emoji: '📦', color: '#64748b' }
+    };
+
+    let expenses = JSON.parse(localStorage.getItem('spendwise_expenses') || '[]');
+    let salary = parseFloat(localStorage.getItem('spendwise_salary') || '0');
+    let currentFilter = 'all';
+
+    /* ================================================
+       DATE DISPLAY
+       ================================================ */
+    const now = new Date();
+    document.getElementById('currentDate').textContent = now.toLocaleDateString('en-IN', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    /* ================================================
+       SALARY INPUT
+       ================================================ */
+    const salaryInput = document.getElementById('salaryInput');
+    salaryInput.value = salary || '';
+
+    document.getElementById('saveSalary').addEventListener('click', () => {
+      const val = parseFloat(salaryInput.value);
+      if (!val || val <= 0) return;
+      salary = val;
+      localStorage.setItem('spendwise_salary', salary.toString());
+      render();
+      const btn = document.getElementById('saveSalary');
+      btn.textContent = '✓ Saved!';
+      btn.classList.add('saved');
+      setTimeout(() => { btn.textContent = 'Save'; btn.classList.remove('saved'); }, 1200);
+    });
+
+    salaryInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); document.getElementById('saveSalary').click(); }
+    });
+
+    /* ================================================
+       TIME FILTER
+       ================================================ */
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        render();
+      });
+    });
+
+    function getFilteredExpenses() {
+      const now = new Date();
+      return expenses.filter(e => {
+        const d = new Date(e.date);
+        if (currentFilter === 'daily') {
+          return d.toDateString() === now.toDateString();
+        } else if (currentFilter === 'weekly') {
+          const weekAgo = new Date(now);
+          weekAgo.setDate(weekAgo.getDate() - 7);
+          return d >= weekAgo;
+        } else if (currentFilter === 'monthly') {
+          return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        }
+        return true; // all
+      });
+    }
+
+    /* ================================================
+       RENDER
+       ================================================ */
+    function render() {
+      const filtered = getFilteredExpenses();
+      renderStats(filtered);
+      renderPieChart(filtered);
+      renderBars(filtered);
+      renderTimeline(filtered);
+    }
+
+    /* ---- Stats ---- */
+    function renderStats(filtered) {
+      const total = filtered.reduce((s, e) => s + e.amount, 0);
+      const remaining = salary - total;
+      const pct = salary > 0 ? Math.min((total / salary) * 100, 100) : 0;
+
+      document.getElementById('statSalary').textContent = '₹' + salary.toLocaleString('en-IN');
+      document.getElementById('statSpent').textContent = '₹' + total.toLocaleString('en-IN');
+      document.getElementById('statRemaining').textContent = '₹' + remaining.toLocaleString('en-IN');
+      document.getElementById('statPct').textContent = pct.toFixed(1) + '%';
+      document.getElementById('chartSpentPct').textContent = pct.toFixed(0) + '%';
+
+      // Color remaining
+      const remEl = document.getElementById('statRemaining');
+      remEl.classList.toggle('danger', remaining < 0);
+      const pctEl = document.getElementById('statPct');
+      pctEl.classList.toggle('danger', pct > 80);
+    }
+
+    /* ---- Salary Pie Chart ---- */
+    function renderPieChart(filtered) {
+      const total = filtered.reduce((s, e) => s + e.amount, 0);
+      const chartEmpty = document.getElementById('salaryChartEmpty');
+      const chartContainer = document.getElementById('salaryChartContainer');
+      const legend = document.getElementById('salaryLegend');
+
+      if (salary <= 0 || total === 0) {
+        chartEmpty.style.display = 'flex';
+        chartContainer.style.display = 'none';
+        legend.innerHTML = '';
+        return;
+      }
+
+      chartEmpty.style.display = 'none';
+      chartContainer.style.display = 'flex';
+
+      const catTotals = {};
+      filtered.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + e.amount; });
+
+      const remaining = Math.max(salary - total, 0);
+      const canvas = document.getElementById('salaryPieChart');
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const size = 300;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      canvas.style.width = size + 'px';
+      canvas.style.height = size + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const cx = size / 2, cy = size / 2;
+      const radius = size / 2 - 8;
+      const innerRadius = radius * 0.58;
+      let startAngle = -Math.PI / 2;
+      const sorted = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
+
+      ctx.clearRect(0, 0, size, size);
+
+      sorted.forEach(([cat, amount]) => {
+        const sliceAngle = (amount / salary) * 2 * Math.PI;
+        const endAngle = startAngle + sliceAngle;
+        const color = (CATEGORIES[cat] || CATEGORIES['Other']).color;
+        ctx.beginPath();
+        ctx.moveTo(cx + innerRadius * Math.cos(startAngle), cy + innerRadius * Math.sin(startAngle));
+        ctx.arc(cx, cy, radius, startAngle, endAngle);
+        ctx.arc(cx, cy, innerRadius, endAngle, startAngle, true);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+        startAngle = endAngle;
+      });
+
+      if (remaining > 0) {
+        const sliceAngle = (remaining / salary) * 2 * Math.PI;
+        const endAngle = startAngle + sliceAngle;
+        ctx.beginPath();
+        ctx.moveTo(cx + innerRadius * Math.cos(startAngle), cy + innerRadius * Math.sin(startAngle));
+        ctx.arc(cx, cy, radius, startAngle, endAngle);
+        ctx.arc(cx, cy, innerRadius, endAngle, startAngle, true);
+        ctx.closePath();
+        ctx.fillStyle = '#22c55e';
+        ctx.fill();
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+      }
+
+      // Legend
+      let html = sorted.map(([cat, amt]) => {
+        const p = ((amt / salary) * 100).toFixed(1);
+        const c = (CATEGORIES[cat] || CATEGORIES['Other']).color;
+        return `<div class="legend-item"><span class="legend-dot" style="background:${c}"></span><span class="legend-name">${cat}</span><span class="legend-value">₹${amt.toLocaleString('en-IN')} (${p}%)</span></div>`;
+      }).join('');
+      if (remaining > 0) {
+        const rp = ((remaining / salary) * 100).toFixed(1);
+        html += `<div class="legend-item"><span class="legend-dot" style="background:#22c55e"></span><span class="legend-name">Remaining</span><span class="legend-value">₹${remaining.toLocaleString('en-IN')} (${rp}%)</span></div>`;
+      }
+      legend.innerHTML = html;
+    }
+
+    /* ---- Category Progress Bars ---- */
+    function renderBars(filtered) {
+      const list = document.getElementById('catBarsList');
+      const empty = document.getElementById('barsEmpty');
+      const total = filtered.reduce((s, e) => s + e.amount, 0);
+      list.querySelectorAll('.cat-bar-item').forEach(el => el.remove());
+
+      if (salary <= 0 || total === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      const catTotals = {};
+      filtered.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + e.amount; });
+      const sorted = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
+
+      sorted.forEach(([cat, amount]) => {
+        const pct = Math.min((amount / salary) * 100, 100).toFixed(1);
+        const info = CATEGORIES[cat] || CATEGORIES['Other'];
+        const item = document.createElement('div');
+        item.className = 'cat-bar-item';
+        item.innerHTML = `
+          <div class="cbar-header">
+            <div class="cbar-left"><span class="cbar-emoji">${info.emoji}</span><span class="cbar-name">${cat}</span></div>
+            <div class="cbar-right"><span class="cbar-amount">₹${amount.toLocaleString('en-IN')}</span><span class="cbar-pct" style="color:${info.color}">${pct}%</span></div>
+          </div>
+          <div class="cbar-track"><div class="cbar-fill" style="width:${pct}%;background:${info.color}"></div></div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    /* ---- Spending Timeline (Bar Chart) ---- */
+    function renderTimeline(filtered) {
+      const canvas = document.getElementById('barChart');
+      const empty = document.getElementById('timelineEmpty');
+
+      if (filtered.length === 0) {
+        empty.style.display = 'block';
+        canvas.style.display = 'none';
+        return;
+      }
+      empty.style.display = 'none';
+      canvas.style.display = 'block';
+
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+
+      // Group by date
+      const groups = {};
+      filtered.forEach(e => {
+        const d = new Date(e.date);
+        let key;
+        if (currentFilter === 'daily') {
+          key = d.toLocaleTimeString('en-IN', { hour: '2-digit' });
+        } else {
+          key = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+        }
+        groups[key] = (groups[key] || 0) + e.amount;
+      });
+
+      const labels = Object.keys(groups);
+      const values = Object.values(groups);
+      const maxVal = Math.max(...values, 1);
+
+      const w = canvas.parentElement.clientWidth;
+      const h = 250;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      ctx.clearRect(0, 0, w, h);
+
+      const padding = { top: 20, right: 20, bottom: 40, left: 60 };
+      const chartW = w - padding.left - padding.right;
+      const chartH = h - padding.top - padding.bottom;
+      const barGap = 8;
+      const barWidth = Math.min(Math.max((chartW / labels.length) - barGap, 10), 50);
+
+      // Grid lines
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = padding.top + (chartH / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(w - padding.right, y);
+        ctx.stroke();
+        // Y labels
+        const val = maxVal - (maxVal / 4) * i;
+        ctx.fillStyle = '#64748b';
+        ctx.font = '11px Inter, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('₹' + Math.round(val).toLocaleString('en-IN'), padding.left - 8, y + 4);
+      }
+
+      // Bars
+      const totalBarSpace = labels.length * (barWidth + barGap) - barGap;
+      const startX = padding.left + (chartW - totalBarSpace) / 2;
+
+      labels.forEach((label, i) => {
+        const barH = (values[i] / maxVal) * chartH;
+        const x = startX + i * (barWidth + barGap);
+        const y = padding.top + chartH - barH;
+
+        // Bar gradient
+        const grad = ctx.createLinearGradient(x, y, x, y + barH);
+        grad.addColorStop(0, '#34d399');
+        grad.addColorStop(1, '#059669');
+        ctx.fillStyle = grad;
+
+        // Rounded top
+        const r = Math.min(barWidth / 2, 6);
+        ctx.beginPath();
+        ctx.moveTo(x, y + barH);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.lineTo(x + barWidth - r, y);
+        ctx.quadraticCurveTo(x + barWidth, y, x + barWidth, y + r);
+        ctx.lineTo(x + barWidth, y + barH);
+        ctx.closePath();
+        ctx.fill();
+
+        // X label
+        ctx.fillStyle = '#64748b';
+        ctx.font = '11px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(label, x + barWidth / 2, padding.top + chartH + 20);
+
+        // Value on top
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px Inter, sans-serif';
+        ctx.fillText('₹' + values[i].toLocaleString('en-IN'), x + barWidth / 2, y - 6);
+      });
+    }
+
+    /* ================================================
+       SIDEBAR TOGGLE
+       ================================================ */
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('menuToggle').classList.toggle('open');
+    });
+
+    /* ================================================
+       INIT
+       ================================================ */
+    render();
+  </script>
+</body>
+</html>
